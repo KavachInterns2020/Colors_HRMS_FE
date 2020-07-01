@@ -1,0 +1,75 @@
+ .app{
+  min-height: 100vh;
+  background-color:#282c34 ;
+ }
+ 
+ 
+ span{
+   font-size:xx-small;
+ }
+ 
+ .container {
+
+}
+:root{
+  --light-green:#299;
+  --dark-green:#277;
+
+}
+
+
+.app {
+  
+  font-size: 28px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #282c34;
+}
+
+.loginForm {
+ box-sizing: border-box;
+ align-items: center;
+ width: 100%;
+ max-width: 400px;
+ padding-left: 20px;
+ padding-right: 20px;
+}
+
+.inputField {
+ padding-top: 16px;
+}
+
+.input {
+ box-sizing: border-box;
+ outline: none;
+ border: solid 2px #1189de;
+ border-radius: 4px;
+ color: #292929;
+ width: 100%;
+ padding: 12px;
+ font-size: 14px;
+ background: rgba(255, 255, 255, 1);
+}
+
+.submitButton {
+ padding-top: 16px;
+ 
+}
+
+
+.btn {
+ width: 100%;
+ min-width: 280px;
+ color: #565656;
+ padding: 12px;
+ font-size: 14px;
+ font-weight: bold;
+ border: solid 2px #1189de;
+ border-radius: 4px;
+ background:whitesmoke;
+ cursor: pointer;
+}
+
