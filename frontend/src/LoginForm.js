@@ -3,7 +3,7 @@ import InputField from "./InputField";
 import SubmitButton from "./SubmitButton";
 import UserStore from "./Stores/UserStores";
 
-
+import axios from 'axios';
 
 class LoginForm extends React.Component{
 constructor(props){
@@ -33,6 +33,8 @@ resetForm(){
 }
 
 async doLogin(){
+    console.log("HI");
+    
     if(!this.state.username){
         return;
     }
@@ -41,31 +43,45 @@ async doLogin(){
     }
     this.setState({
         buttonDisabled:true
-    })
+    });
     
     try{
-        let res=await fetch("/login",{
-            method:"post",
-            headers:{
-              "Accept":"application/json",
-              "content-Type":"application/json"  
-            },
-            body: JSON.stringify({
-                username:this.state.username,
-                password:this.state.password
-            })
-        });
-        let result= await res.json();
-        if(result && result.success){
-            UserStore.isLoggedIn=true;
-            UserStore.username=result.username;
-        }
-        else if(result && result.success ===false){
-            this.resetForm();
-            alert(result.msg);
-        }
 
-    }catch(e){
+        axios.post('http://localhost:8000/rest-auth/login/', {username:this.state.username,
+                password:this.state.password}).then((res) => {
+                    console.log(res.data.key);
+
+                }).catch((err) => {
+                    console.log(err);
+                })
+        // let res=await fetch("http://localhost:8000/rest-auth/login/",{
+        //     method:"post",
+        //     headers:{
+        //       "Accept":"application/json",
+        //       "content-Type":"application/json"  
+        //     },
+        //     body: JSON.stringify({
+        //         username:this.state.username,
+        //         password:this.state.password
+        //     })
+        // }).then((res) => {
+        //     console.log(res.json);
+        // }).catch((err) => {
+        //     console.log(err);
+        // });
+        // let result= await res.json();
+        // if(result && result.success){
+        //     console.log(result);
+        //     UserStore.isLoggedIn=true;
+        //     UserStore.username=result.username;
+        // }
+        // else if(result && result.success ===false){
+        //     this.resetForm();
+        //     alert(result.msg);
+        // }
+        // console.log("err");
+
+    } catch(e){
           console.log(e);
           this.resetForm();
     }
