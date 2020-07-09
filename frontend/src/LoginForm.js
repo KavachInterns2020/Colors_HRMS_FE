@@ -93,8 +93,10 @@ render(){
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+export default LoginForm
+
+/*const mapDispatchToProps = (dispatch, ownProps) => {
   return { loggedin: (token) => dispatch(authLogin(token)) };
 };
 
-export default connect(null, mapDispatchToProps)(LoginForm);
+export default connect(null, mapDispatchToProps)(LoginForm);*/
