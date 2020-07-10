@@ -3,6 +3,8 @@ import Header from "../components/templates/Header";
 import Navbar from "../components/layouts/static/Navbar";
 import Footer from "../components/templates/Footer";
 import { Redirect } from "react-router-dom";
+import axios from "axios";
+
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
@@ -32,12 +34,30 @@ class LoginForm extends React.Component {
     e.preventDefault();
     const { username, password } = this.state;
 
-    if (username === "colors" && password === "123vignesh") {
-      localStorage.setItem("token", "colorshrms");
-      this.setState({
-        loggedIn: true,
+
+    // VIGNESH WORK WITHOUT BE
+    // if (username === "colors" && password === "123vignesh") {
+    //   localStorage.setItem("token", "colorshrms");
+    //   this.setState({
+    //     loggedIn: true,
+    //   });
+    // }
+
+    axios
+      .post("http://localhost:8000/rest-auth/login/", {
+        username: this.state.username,
+        password: this.state.password,
+      })
+      .then((res) => {
+        console.log(res.data.key);
+        localStorage.setItem("token", res.data.key);
+        this.setState({
+          loggedIn: true,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
       });
-    }
   }
 
   render() {

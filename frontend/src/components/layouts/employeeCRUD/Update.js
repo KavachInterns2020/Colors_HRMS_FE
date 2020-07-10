@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios from 'axios';
 
 import { Link, Redirect } from "react-router-dom";
 import Navbar from "../static/Navbar";
@@ -24,6 +25,7 @@ class Update extends Component {
       state: "",
       pincode: "",
       department: "",
+      token: localStorage.getItem('token'),
     };
   }
 
@@ -35,7 +37,24 @@ class Update extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    console.log(this.state);
+    const { token, employee_id } = this.state;
+    console.log(token, employee_id);
+
+    axios
+      .post(`http://127.0.0.1:8000/employee/${employee_id}/update/`, {
+        headers: { "Authorization": `Token ${token}`}, body: { "data":this.state },
+      })
+      .then((res) => {
+        if(res.data.status === "success") {
+          console.log("The Employee had updated");
+          console.log(res.data);
+        } else if(res.data.status === "failed") {
+          console.log("no employee record");
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   render() {

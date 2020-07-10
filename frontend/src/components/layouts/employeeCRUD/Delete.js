@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios from 'axios';
 
 import { Link, Redirect } from "react-router-dom";
 import Navbar from "../static/Navbar";
@@ -10,22 +11,41 @@ class Delete extends Component {
     super(props);
 
     this.state = {
-      EmployeeId: "",
+      employee_id: "",
+      token: localStorage.getItem('token')
     };
   }
 
   handleIdChange = (event) => {
     this.setState({
-      EmployeeId: event.target.value,
+      employee_id: event.target.value,
     });
   };
 
   handleSubmit = (event) => {
     event.preventDefault();
+    const { token, employee_id } = this.state;
+    console.log(token, employee_id);
+
+    axios
+      .get(`http://127.0.0.1:8000/employee/${employee_id}/delete/`, {
+        headers: { "Authorization": `Token ${token}` },
+      })
+      .then((res) => {
+        if(res.data.status === "success") {
+          console.log("The Employee had removed");
+          console.log(res.data);
+        } else if(res.data.status === "failed") {
+          console.log("no employee record or already deleted");
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   render() {
-    const { EmployeeId } = this.state;
+    const { employee_id } = this.state;
     return (
       <>
         <Navbar />
@@ -37,7 +57,7 @@ class Delete extends Component {
               <input
                 type="text"
                 name="employee_id"
-                value={EmployeeId}
+                value={employee_id}
                 onChange={this.handleIdChange}
               />
             </div>
