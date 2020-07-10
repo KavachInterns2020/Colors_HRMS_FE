@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 
 import { Link, Redirect } from "react-router-dom";
-import Navbar from "./Navbar";
-import Footer from "./Footer";
+import Navbar from "../static/Navbar";
+import Footer from "../../templates/Footer";
 export default class Info extends Component {
   render() {
     return (

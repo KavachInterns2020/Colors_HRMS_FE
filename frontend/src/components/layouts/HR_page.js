@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
-import Navbar from "./Navbar";
-import Footer from "./Footer";
-import timesheet1 from "../../timesheet1.jpg";
-import performance from "../../performance.jpg";
-import crud from "../../crud.png";
+import Navbar from "./static/Navbar";
+import Footer from "../templates/Footer";
+import timesheet1 from "../../images/timesheet1.jpg";
+import performance from "../../images/performance.jpg";
+import crud from "../../images/crud.png";
 
 export default class HR_page extends Component {
   constructor(props) {

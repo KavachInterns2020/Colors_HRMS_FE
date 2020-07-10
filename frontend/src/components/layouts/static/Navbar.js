@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import colors from "../../colors.jpeg";
+import colors from "../../../images/colors.jpeg";
+
 function Navbar() {
   return (
     <NavbarContainer>
