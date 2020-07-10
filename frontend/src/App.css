@@ -62,7 +62,14 @@
 .topnav input[type=text] {
   border: 1px solid #ccc;
 }
-
+input select option{
+  width:300px;
+  
+ 
+}
+label{
+  margin-right: 300px;
+}
 
 
 
