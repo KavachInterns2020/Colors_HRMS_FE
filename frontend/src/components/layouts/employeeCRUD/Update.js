@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import axios from 'axios';
+import axios from "axios";
 
 import { Link, Redirect } from "react-router-dom";
 import Navbar from "../static/Navbar";
 import Footer from "../../templates/Footer";
 import Header from "../../templates/Header";
+import Spinner from "../static/Spinner";
 
 class Update extends Component {
   constructor(props) {
@@ -16,7 +17,7 @@ class Update extends Component {
       middle_name: "",
       last_name: "",
       email: "",
-      gender:"",
+      gender: "",
       date_of_birth: "male",
       phone_number: "",
       door_no: "",
@@ -25,7 +26,8 @@ class Update extends Component {
       state: "",
       pincode: "",
       department: "",
-      token: localStorage.getItem('token'),
+      token: localStorage.getItem("token"),
+      isLoading: false,
     };
   }
 
@@ -35,58 +37,90 @@ class Update extends Component {
     });
   };
 
+  resetHandler = () => {
+    this.setState({
+      employee_id: "",
+      first_name: "",
+      middle_name: "",
+      last_name: "",
+      email: "",
+      gender: "male",
+      date_of_birth: "",
+      phone_number: "",
+      door_no: "",
+      street: "",
+      area: "",
+      state: "",
+      pincode: "",
+      department: "",
+    })
+  }
+
   handleSubmit = (event) => {
     event.preventDefault();
     const { token, employee_id } = this.state;
     console.log(token, employee_id);
 
-    axios
-      .post(`http://127.0.0.1:8000/employee/${employee_id}/update/`, {
-        headers: { "Authorization": `Token ${token}`}, body: { "data":this.state },
-      })
-      .then((res) => {
-        if(res.data.status === "success") {
-          console.log("The Employee had updated");
-          console.log(res.data);
-        } else if(res.data.status === "failed") {
-          console.log("no employee record");
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.setState({ isLoading: true }, () => {
+      axios
+        .post(
+          `http://127.0.0.1:8000/employee/${employee_id}/update/`,
+          { body: { data: this.state } },
+          {
+            headers: { Authorization: `Token ${token}` },
+          }
+        )
+        .then((res) => {
+          if (res.data.status === "success") {
+            console.log("The Employee had updated");
+            console.log(res.data);
+            alert("Updated successfully")
+            this.resetHandler();
+          } else if (res.data.status === "failed") {
+            console.log("no employee record");
+            alert("Error! something went wrong please check the form")
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      setTimeout(() => {
+        this.setState({ isLoading: false });
+      }, 2000);
+    });
   };
 
   render() {
     const {
-      EmployeeId,
-      firstname,
-      middlename,
-      lastname,
+      employee_id,
+      first_name,
+      middle_name,
+      last_name,
       email,
       gender,
-      date,
-      phoneno,
-      doorno,
+      date_of_birth ,
+      phone_number,
+      door_no,
       street,
       area,
       state,
       pincode,
-      department,
+      department
     } = this.state;
 
     return (
       <>
+        {this.state.isLoading ? <Spinner /> : null}
         <Navbar />
-        <div className="app">
-          <Link to="/logout">Logout</Link>
+        <div className="app crud-form">
+          <Link to="/logout" className="sideview">Logout</Link>
           <form onSubmit={this.handleSubmit} style={{ marginBottom: "70px" }}>
             <div>
               <label>Employee id </label>
               <input
                 type="text"
                 name="employee_id"
-                value={EmployeeId}
+                value={employee_id}
                 onChange={this.handleChange}
               />
             </div>
@@ -95,7 +129,7 @@ class Update extends Component {
               <input
                 type="text"
                 name="first_name"
-                value={firstname}
+                value={first_name}
                 onChange={this.handleChange}
               />
             </div>
@@ -104,7 +138,7 @@ class Update extends Component {
               <input
                 type="text"
                 name="middle_name"
-                value={middlename}
+                value={middle_name}
                 onChange={this.handleChange}
               />
             </div>
@@ -113,7 +147,7 @@ class Update extends Component {
               <input
                 type="text"
                 name="last_name"
-                value={lastname}
+                value={last_name}
                 onChange={this.handleChange}
               />
             </div>
@@ -139,7 +173,7 @@ class Update extends Component {
               <input
                 type="date"
                 name="date_of_birth"
-                value={date}
+                value={date_of_birth}
                 onChange={this.handleChange}
               />
             </div>
@@ -148,7 +182,7 @@ class Update extends Component {
               <input
                 type="text"
                 name="phone_number"
-                value={phoneno}
+                value={phone_number}
                 onChange={this.handleChange}
               />
             </div>
@@ -156,7 +190,7 @@ class Update extends Component {
               <label>Door No </label>
               <input
                 type="text"
-                value={doorno}
+                value={door_no}
                 onChange={this.handleChange}
                 name="door_no"
               />

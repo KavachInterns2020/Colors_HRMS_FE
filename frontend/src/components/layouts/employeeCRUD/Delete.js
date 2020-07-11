@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import axios from 'axios';
+import axios from "axios";
 
 import { Link, Redirect } from "react-router-dom";
 import Navbar from "../static/Navbar";
 import Footer from "../../templates/Footer";
 import Header from "../../templates/Header";
+import Spinner from "../static/Spinner";
 
 class Delete extends Component {
   constructor(props) {
@@ -12,7 +13,8 @@ class Delete extends Component {
 
     this.state = {
       employee_id: "",
-      token: localStorage.getItem('token')
+      token: localStorage.getItem("token"),
+      isLoading: false,
     };
   }
 
@@ -27,30 +29,41 @@ class Delete extends Component {
     const { token, employee_id } = this.state;
     console.log(token, employee_id);
 
-    axios
-      .get(`http://127.0.0.1:8000/employee/${employee_id}/delete/`, {
-        headers: { "Authorization": `Token ${token}` },
-      })
-      .then((res) => {
-        if(res.data.status === "success") {
-          console.log("The Employee had removed");
-          console.log(res.data);
-        } else if(res.data.status === "failed") {
-          console.log("no employee record or already deleted");
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.setState({ isLoading: true }, () => {
+      axios
+        .get(`http://127.0.0.1:8000/employee/${employee_id}/delete/`, {
+          headers: { Authorization: `Token ${token}` },
+        })
+        .then((res) => {
+          if (res.data.status === "success") {
+            console.log("The Employee had removed");
+            console.log(res.data);
+            this.setState({ employee_id: ""});
+            alert("Employee record removed")
+          } else if (res.data.status === "failed") {
+            console.log("no employee record");
+            alert("No employee record")
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("Server Error")
+        });
+
+        setTimeout(() => {
+          this.setState({ isLoading: false });
+        }, 2000)
+    });
   };
 
   render() {
     const { employee_id } = this.state;
     return (
       <>
+        {this.state.isLoading ? <Spinner /> : null}
         <Navbar />
-        <div className="app">
-          <Link to="/logout">Logout</Link>
+        <div className="app crud-form">
+          <Link to="/logout"className="sideview">Logout</Link>
           <form onSubmit={this.handleSubmit}>
             <div>
               <label>Employee id </label>

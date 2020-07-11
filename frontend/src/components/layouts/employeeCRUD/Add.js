@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import axios from 'axios';
+import axios from "axios";
 
 import { Link, Redirect } from "react-router-dom";
 import Navbar from "../static/Navbar";
 import Footer from "../../templates/Footer";
 import Header from "../../templates/Header";
+import Spinner from "../static/Spinner";
 
 class Add extends Component {
   constructor(props) {
@@ -12,7 +13,7 @@ class Add extends Component {
 
     this.state = {
       employee_id: "",
-      first_name: "", 
+      first_name: "",
       middle_name: "",
       last_name: "",
       email: "",
@@ -25,7 +26,8 @@ class Add extends Component {
       state: "",
       pincode: "",
       department: "",
-      token: localStorage.getItem('token')
+      token: localStorage.getItem("token"),
+      isLoading: false,
     };
   }
 
@@ -35,57 +37,91 @@ class Add extends Component {
     });
   };
 
+  resetHandler = () => {
+    this.setState({
+      employee_id: "",
+      first_name: "",
+      middle_name: "",
+      last_name: "",
+      email: "",
+      gender: "male",
+      date_of_birth: "",
+      phone_number: "",
+      door_no: "",
+      street: "",
+      area: "",
+      state: "",
+      pincode: "",
+      department: "",
+    })
+  }
+
   handleSubmit = (event) => {
     event.preventDefault();
+    console.log(this.state);
+    this.setState({ isLoading: true }, () => {
+      axios
+        .post(
+          `http://127.0.0.1:8000/employee/create/`,
+          { body: { data: this.state } },
+          {
+            headers: { Authorization: `Token ${this.state.token}` },
+          }
+        )
+        .then((res) => {
+          if (res.data.status === "success") {
+            console.log(res.data);
+            this.resetHandler();
+          } else if (res.data.status === "failed") {
+            console.log("no employee record");
+            alert("Error! something went wrong please check the form")
+          }
 
-    axios
-      .post(`http://127.0.0.1:8000/employee/create/`, {
-        headers: { "Authorization": `Token ${this.state.token}`}, body: { "data":this.state },
-      })
-      .then((res) => {
-        if(res.data.status === "success") {
-          console.log("The Employee had updated");
-          console.log(res.data);
-        } else if(res.data.status === "failed") {
-          console.log("no employee record");
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
+        })
+        .catch((err) => {
+          console.log(err);
+          alert("Error! server hanged")
+        });
+        setTimeout(() => {
+          this.setState({ isLoading: false });
+        }, 2000)
+    });
   };
 
   render() {
     const {
-      EmployeeId,
-      firstname,
-      middlename,
-      lastname,
+      employee_id,
+      first_name,
+      middle_name,
+      last_name,
       email,
       gender,
-      date,
-      phoneno,
-      doorno,
+      date_of_birth ,
+      phone_number,
+      door_no,
       street,
       area,
       state,
       pincode,
-      department,
+      department
     } = this.state;
+
 
     return (
       <>
+        {this.state.isLoading ? <Spinner /> : null}
         <Navbar />
-        <div className="app">
-          <Link to="/logout">Logout</Link>
+        <div className="app crud-form">
+          <Link to="/logout" className="sideview">Logout</Link>
           <form onSubmit={this.handleSubmit} style={{ marginBottom: "70px" }}>
             <div>
               <label>Employee id </label>
               <input
                 type="text"
                 name="employee_id"
-                value={EmployeeId}
+                value={employee_id}
                 onChange={this.handleChange}
+                required
               />
             </div>
             <div>
@@ -93,8 +129,9 @@ class Add extends Component {
               <input
                 type="text"
                 name="first_name"
-                value={firstname}
+                value={first_name}
                 onChange={this.handleChange}
+                required
               />
             </div>
             <div>
@@ -102,7 +139,7 @@ class Add extends Component {
               <input
                 type="text"
                 name="middle_name"
-                value={middlename}
+                value={middle_name}
                 onChange={this.handleChange}
               />
             </div>
@@ -111,8 +148,9 @@ class Add extends Component {
               <input
                 type="text"
                 name="last_name"
-                value={lastname}
+                value={last_name}
                 onChange={this.handleChange}
+                required
               />
             </div>
             <div>
@@ -122,11 +160,12 @@ class Add extends Component {
                 name="email"
                 value={email}
                 onChange={this.handleChange}
+                required
               />
             </div>
             <div>
               <label>Gender</label>
-              <select name="gender" value={gender} onChange={this.handleChange}>
+              <select name="gender" value={gender} onChange={this.handleChange} >
                 <option value="male">male</option>
                 <option value="Female">Female</option>
                 <option value="Between">Between</option>
@@ -137,8 +176,9 @@ class Add extends Component {
               <input
                 type="date"
                 name="date_of_birth"
-                value={date}
+                value={date_of_birth}
                 onChange={this.handleChange}
+                required
               />
             </div>
             <div>
@@ -146,17 +186,19 @@ class Add extends Component {
               <input
                 type="text"
                 name="phone_number"
-                value={phoneno}
+                value={phone_number}
                 onChange={this.handleChange}
+                required
               />
             </div>
             <div>
               <label>Door No </label>
               <input
                 type="text"
-                value={doorno}
-                onChange={this.handleChange}
                 name="door_no"
+                value={door_no}
+                onChange={this.handleChange}
+                required
               />
             </div>
             <div>
@@ -166,6 +208,7 @@ class Add extends Component {
                 name="street"
                 value={street}
                 onChange={this.handleChange}
+                required
               />
             </div>
             <div>
@@ -175,6 +218,7 @@ class Add extends Component {
                 value={area}
                 name="area"
                 onChange={this.handleChange}
+                required
               />
             </div>
             <div>
@@ -184,6 +228,7 @@ class Add extends Component {
                 value={state}
                 name="state"
                 onChange={this.handleChange}
+                required
               />
             </div>
             <div>
@@ -193,6 +238,7 @@ class Add extends Component {
                 value={pincode}
                 name="pincode"
                 onChange={this.handleChange}
+                required
               />
             </div>
             <div>
@@ -202,6 +248,7 @@ class Add extends Component {
                 value={department}
                 name="department"
                 onChange={this.handleChange}
+                required
               />
             </div>
             <button type="submit">Submit</button>

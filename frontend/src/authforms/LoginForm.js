@@ -1,9 +1,11 @@
 import React, { Component } from "react";
+import axios from "axios";
+
 import Header from "../components/templates/Header";
 import Navbar from "../components/layouts/static/Navbar";
 import Footer from "../components/templates/Footer";
 import { Redirect } from "react-router-dom";
-import axios from "axios";
+import Spinner from "../components/layouts/static/Spinner";
 
 class LoginForm extends React.Component {
   constructor(props) {
@@ -18,6 +20,7 @@ class LoginForm extends React.Component {
       username: "",
       password: "",
       loggedIn,
+      isLoading: false,
     };
 
     this.onChange = this.onChange.bind(this);
@@ -34,41 +37,41 @@ class LoginForm extends React.Component {
     e.preventDefault();
     const { username, password } = this.state;
 
-
-    // VIGNESH WORK WITHOUT BE
-    // if (username === "colors" && password === "123vignesh") {
-    //   localStorage.setItem("token", "colorshrms");
-    //   this.setState({
-    //     loggedIn: true,
-    //   });
-    // }
-
-    axios
-      .post("http://localhost:8000/rest-auth/login/", {
-        username: this.state.username,
-        password: this.state.password,
-      })
-      .then((res) => {
-        console.log(res.data.key);
-        localStorage.setItem("token", res.data.key);
-        this.setState({
-          loggedIn: true,
+    this.setState({ isLoading: true }, () => {
+      console.log(this.state.isLoading);
+      axios
+        .post("http://localhost:8000/rest-auth/login/", {
+          username: this.state.username,
+          password: this.state.password,
+        })
+        .then((res) => {
+          console.log(res.data.key);
+          localStorage.setItem("token", res.data.key);
+          this.setState({
+            loggedIn: true,
+          });
+          setTimeout(() => {
+            this.setState({ isLoading: false });
+          }, 1500);
+        })
+        .catch((err) => {
+          console.log(err);
+          this.setState({ isLoading: false });
+          alert("Invalid password");
         });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    });
   }
 
   render() {
     if (this.state.loggedIn) {
       return <Redirect to="/HR_page" />;
     }
-
     return (
       <>
         <Navbar />
-        <div className="app">
+        <div className="app login-form">
+          {this.state.isLoading ? <Spinner /> : null}
+
           <Header />
           <div className="loginForm">
             <form onSubmit={this.submitForm}>

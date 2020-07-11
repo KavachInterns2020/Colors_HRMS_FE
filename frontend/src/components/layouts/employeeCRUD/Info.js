@@ -4,6 +4,7 @@ import axios from "axios";
 import { Link, Redirect } from "react-router-dom";
 import Navbar from "../static/Navbar";
 import Footer from "../../templates/Footer";
+import Spinner from "../static/Spinner";
 
 export default class Info extends Component {
   constructor(props) {
@@ -18,7 +19,21 @@ export default class Info extends Component {
 
     this.state = {
       employee_id: "",
+      first_name: "",
+      middle_name: "",
+      last_name: "",
+      email: "",
+      gender: "",
+      date_of_birth: "",
+      phone_number: "",
+      door_no: "",
+      street: "",
+      area: "",
+      state: "",
+      pincode: "",
+      department: "",
       token: token,
+      isLoading: false,
     };
   }
 
@@ -28,31 +43,79 @@ export default class Info extends Component {
     });
   };
 
+  resetHandler = () => {
+    this.setState({
+      employee_id: "",
+      first_name: "",
+      middle_name: "",
+      last_name: "",
+      email: "",
+      gender: "",
+      date_of_birth: "",
+      phone_number: "",
+      door_no: "",
+      street: "",
+      area: "",
+      state: "",
+      pincode: "",
+      department: "",
+    })
+  }
+
   submitHandler = (e) => {
     e.preventDefault();
     const { token, employee_id } = this.state;
     console.log(token, employee_id);
 
-    axios
-      .get(`http://127.0.0.1:8000/employee/${employee_id}/`, {
-        headers: { "Authorization": `Token ${token}` },
-      })
-      .then((res) => {
-        if(res.data.status === "success") {
-          console.log("The enty found");
-          console.log(res.data.data);
-        } else if(res.data.status === "failed") {
-          console.log("No entry found");
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.setState({ isLoading: true }, () => {
+      axios
+        .get(`http://127.0.0.1:8000/employee/${employee_id}/`, {
+          headers: { Authorization: `Token ${token}` },
+        })
+        .then((res) => {
+          if (res.data.status === "success") {
+            console.log("The enty found");
+            console.log(res.data.data);
+            const data = res.data.data;
+            this.setState(data);
+          } else if (res.data.status === "failed") {
+            console.log("No entry found");
+            alert("No entry found");
+            this.resetHandler();
+          }
+        })
+        .catch((err) => {
+          alert("Network error");
+          console.log(err);
+        });
+      setTimeout(() => {
+        this.setState({ isLoading: false });
+      }, 2000);
+    });
   };
 
   render() {
+    const {
+      employee_id,
+      first_name,
+      middle_name,
+      last_name,
+      email,
+      gender,
+      date_of_birth ,
+      phone_number,
+      door_no,
+      street,
+      area,
+      state,
+      pincode,
+      department
+    } = this.state;
+
+
     return (
       <div>
+        {this.state.isLoading ? <Spinner /> : null}
         <Navbar />
         <div
           className="app"
@@ -63,7 +126,7 @@ export default class Info extends Component {
             marginBottom: "40px",
           }}
         >
-          <Link to="/logout">Logout</Link>
+          <Link to="/logout"className="sideview">Logout</Link>
           <div className="topnav">
             <input
               type="text"
@@ -80,61 +143,67 @@ export default class Info extends Component {
             <tr>
               <td>Authentication ID</td>
               <td>
-                <input type="text"></input>
+                {employee_id}
               </td>
             </tr>
             <tr>
               <td>Employee ID</td>
               <td>
-                <input type="text"></input>
+              {employee_id}
               </td>
             </tr>
             <tr>
               <td>First Name</td>
               <td>
-                <input type="text"></input>
+              {first_name}
+              </td>
+            </tr>
+            <tr>
+              <td>Middle Name</td>
+              <td>
+              {middle_name}
               </td>
             </tr>
             <tr>
               <td>Last Name</td>
               <td>
-                <input type="text"></input>
+              {last_name}
               </td>
             </tr>
             <tr>
               <td>Dob</td>
               <td>
-                <input type="text"></input>
+              {date_of_birth}
               </td>
             </tr>
             <tr>
               <td>Email</td>
               <td>
-                <input type="text"></input>
+              {email}
               </td>
             </tr>
             <tr>
               <td>Gender</td>
               <td>
-                <input type="text"></input>
+              {gender}
               </td>
             </tr>
             <tr>
               <td>Address</td>
               <td>
-                <input type="text"></input>
+              { `${door_no}  ${street} ${area} ${state} ${pincode}`}
               </td>
             </tr>
             <tr>
               <td>Phone number</td>
               <td>
-                <input type="text"></input>
+              {phone_number}
               </td>
             </tr>
             <tr>
               <td>Department</td>
               <td>
-                <input type="text"></input>
+              {department}
               </td>
             </tr>
           </table>
