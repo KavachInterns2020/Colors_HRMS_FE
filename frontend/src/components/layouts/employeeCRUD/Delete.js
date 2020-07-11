@@ -38,21 +38,18 @@ class Delete extends Component {
           if (res.data.status === "success") {
             console.log("The Employee had removed");
             console.log(res.data);
-            this.setState({ employee_id: ""});
-            alert("Employee record removed")
+            this.setState({ employee_id: "" });
+            alert("Employee record removed");
           } else if (res.data.status === "failed") {
-            console.log("no employee record");
-            alert("No employee record")
+            alert("No employee record");
           }
+          this.setState({ isLoading: false });
         })
         .catch((err) => {
           console.log(err);
-          alert("Server Error")
-        });
-
-        setTimeout(() => {
+          alert("Server Error");
           this.setState({ isLoading: false });
-        }, 2000)
+        });
     });
   };
 
@@ -63,7 +60,9 @@ class Delete extends Component {
         {this.state.isLoading ? <Spinner /> : null}
         <Navbar />
         <div className="app crud-form">
-          <Link to="/logout"className="sideview">Logout</Link>
+          <Link to="/logout" className="sideview">
+            Logout
+          </Link>
           <form onSubmit={this.handleSubmit}>
             <div>
               <label>Employee id </label>

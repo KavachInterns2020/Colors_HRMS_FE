@@ -45,19 +45,17 @@ class LoginForm extends React.Component {
           password: this.state.password,
         })
         .then((res) => {
-          console.log(res.data.key);
           localStorage.setItem("token", res.data.key);
           this.setState({
             loggedIn: true,
+            isLoading: false
           });
-          setTimeout(() => {
-            this.setState({ isLoading: false });
-          }, 1500);
         })
         .catch((err) => {
           console.log(err);
-          this.setState({ isLoading: false });
-          alert("Invalid password");
+          this.setState({ isLoading: false }, () => {
+            alert("Invalid username or password");
+          });
         });
     });
   }

@@ -53,8 +53,8 @@ class Update extends Component {
       state: "",
       pincode: "",
       department: "",
-    })
-  }
+    });
+  };
 
   handleSubmit = (event) => {
     event.preventDefault();
@@ -74,19 +74,18 @@ class Update extends Component {
           if (res.data.status === "success") {
             console.log("The Employee had updated");
             console.log(res.data);
-            alert("Updated successfully")
+            alert("Updated successfully");
             this.resetHandler();
           } else if (res.data.status === "failed") {
             console.log("no employee record");
-            alert("Error! something went wrong please check the form")
+            alert("Error! something went wrong please check the form");
           }
+          this.setState({ isLoading: false });
         })
         .catch((err) => {
           console.log(err);
+          this.setState({ isLoading: false });
         });
-      setTimeout(() => {
-        this.setState({ isLoading: false });
-      }, 2000);
     });
   };
 
@@ -98,14 +97,14 @@ class Update extends Component {
       last_name,
       email,
       gender,
-      date_of_birth ,
+      date_of_birth,
       phone_number,
       door_no,
       street,
       area,
       state,
       pincode,
-      department
+      department,
     } = this.state;
 
     return (
@@ -113,7 +112,9 @@ class Update extends Component {
         {this.state.isLoading ? <Spinner /> : null}
         <Navbar />
         <div className="app crud-form">
-          <Link to="/logout" className="sideview">Logout</Link>
+          <Link to="/logout" className="sideview">
+            Logout
+          </Link>
           <form onSubmit={this.handleSubmit} style={{ marginBottom: "70px" }}>
             <div>
               <label>Employee id </label>

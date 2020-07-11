@@ -83,14 +83,13 @@ export default class Info extends Component {
             alert("No entry found");
             this.resetHandler();
           }
+          this.setState({ isLoading: false });
         })
         .catch((err) => {
           alert("Network error");
           console.log(err);
+          this.setState({ isLoading: false });
         });
-      setTimeout(() => {
-        this.setState({ isLoading: false });
-      }, 2000);
     });
   };
 

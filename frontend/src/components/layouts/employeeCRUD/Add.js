@@ -73,18 +73,15 @@ class Add extends Component {
             console.log(res.data);
             this.resetHandler();
           } else if (res.data.status === "failed") {
-            console.log("no employee record");
             alert("Error! something went wrong please check the form")
           }
-
+          this.setState({ isLoading: false });
         })
         .catch((err) => {
           console.log(err);
           alert("Error! server hanged")
-        });
-        setTimeout(() => {
           this.setState({ isLoading: false });
-        }, 2000)
+        });
     });
   };
 
