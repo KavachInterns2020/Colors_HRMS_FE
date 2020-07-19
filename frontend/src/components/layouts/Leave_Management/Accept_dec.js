@@ -32,11 +32,11 @@ export default class Accept_dec extends Component {
             <textarea type="text" id="ccnum" name="cardnumber" row="60" cols="40" />
             
             <label for="expmonth">Start Date</label>
-            <input type="date" id="expmonth" name="expmonth" style={{width:"500px"}} />
+            <input type="date" id="expmonth" name="expmonth" style={{width:"500px",color:"black"}} />
             <div className="row">
               <div className="col-50">
                 <label for="expyear">End Date</label>
-                <input type="date" id="expyear" name="expyear"  style={{width:"500px"}}/>
+                <input type="date" id="expyear" name="expyear"  style={{width:"500px",color:"black"}}/>
               </div>
               
             </div>
