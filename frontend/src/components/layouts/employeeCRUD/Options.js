@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import Navbar from "../static/Navbar";
-import Footer from "../../templates/Footer";
+import Footer from "../static/Footer";
 
 export default class Options extends Component {
   render() {

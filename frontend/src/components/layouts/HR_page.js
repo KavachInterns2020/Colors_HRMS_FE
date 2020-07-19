@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
 import Navbar from "./static/Navbar";
-import Footer from "../templates/Footer";
+import Footer from "./static/Footer";
 import timesheet1 from "../../images/timesheet1.jpg";
 import performance from "../../images/performance.jpg";
 import crud from "../../images/crud.png";
@@ -58,15 +58,14 @@ export default class HR_page extends Component {
               <div class="face face1">
                 <div class="content">
                   <img src={performance} alt="logo" />
-                  <h3>Performance Analysis</h3>
+                  <h3>Leave Management</h3>
                 </div>
               </div>
               <div class="face face2">
                 <div class="content">
                   <p style={{ color: "black" }}>
                     <small style={{ fontSize: "20px" }}>
-                      This feature is for analysing the performance of an
-                      employee
+                      This feature is for manageing the leaves applied by employee by approving/declining
                     </small>
                   </p>
 
