@@ -10,6 +10,7 @@ export default class Accept_dec extends Component {
             <div>
                 <Navbar/>
                  <div className="app">
+                 <Link to="/logout">Logout</Link>
                  <div classNames="row">
   <div className="col-75">
     <div className="container2">
@@ -25,26 +26,26 @@ export default class Accept_dec extends Component {
           </div>
 
           <div className="col-50">
-            <label for="cname">Name </label>
-            <input type="text" id="cname" name="cardname"/>
-            <label for="ccnum">Description</label>
-            <textarea type="text" id="ccnum" name="cardnumber" row="60" cols="80" />
+            <label for="cname" style={{color:"black"}}>Name </label>
+            <input type="text" id="cname" name="cardname" style={{marginRight:"200px"}}/>
+            <label for="ccnum" style={{color:"black"}}>Description</label>
+            <textarea type="text" id="ccnum" name="cardnumber" row="60" cols="40" />
             
             <label for="expmonth">Start Date</label>
-            <input type="date" id="expmonth" name="expmonth" />
+            <input type="date" id="expmonth" name="expmonth" style={{width:"500px"}} />
             <div className="row">
               <div className="col-50">
                 <label for="expyear">End Date</label>
-                <input type="date" id="expyear" name="expyear" />
+                <input type="date" id="expyear" name="expyear"  style={{width:"500px"}}/>
               </div>
               
             </div>
           </div>
-          
+          <input type="submit" value="Approve" className="btn2" style={{margin:"2px"}}/>
+          <input type="submit" value="Decline" className="btn2"/>
         </div>
         
-        <input type="submit" value="Approve" className="btn2"/>
-          <input type="submit" value="Decline" className="btn2"/>
+       
       </form>
     </div>
   </div>

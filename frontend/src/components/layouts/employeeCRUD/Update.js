@@ -3,7 +3,7 @@ import axios from "axios";
 
 import { Link, Redirect } from "react-router-dom";
 import Navbar from "../static/Navbar";
-import Footer from "../../templates/Footer";
+import Footer from "../static/Footer";
 import Header from "../../templates/Header";
 import Spinner from "../static/Spinner";
 

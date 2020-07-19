@@ -36,7 +36,8 @@ export default class Leave_info extends Component {
     type="text"
     name="leave1_type"
     value={leave1_type}
-    style={{color:"black",backgroundColor:"grey"}}
+    style={{color:"black",backgroundColor:"smokeWhite"}}
+    placeholder="Sick leave"
     /> 
     </td>
 </Link>

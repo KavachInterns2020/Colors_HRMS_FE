@@ -54,13 +54,16 @@ export default class HR_page extends Component {
                 </div>
               </div>
             </div>
+          
             <div class="card">
+            <Link to="/Add_Leave">
               <div class="face face1">
                 <div class="content">
                   <img src={performance} alt="logo" />
                   <h3>Leave Management</h3>
                 </div>
               </div>
+              </Link>
               <div class="face face2">
                 <div class="content">
                   <p style={{ color: "black" }}>

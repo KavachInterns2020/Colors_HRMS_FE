@@ -88,6 +88,7 @@ export default class Type_of extends Component {
               />
             </div>
             <div>
+              <br/><br/>
               <label>Leave Type Description</label>
               <textarea
                 rows="4" 
@@ -107,6 +108,7 @@ export default class Type_of extends Component {
                 required
               />
             </div>
+            <br/><br/>
             <button type="submit">Submit</button>
           </form>
          </div>

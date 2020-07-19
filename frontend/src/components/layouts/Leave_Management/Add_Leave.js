@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import Navbar from "../static/Navbar";
 import Footer from "../static/Footer";
+import { Link, Redirect } from "react-router-dom";
 export default class Add_Leave extends Component {
     render() {
         return (
         <>
                <Navbar/>
-
+<div className="app">
                <div className="app crud-form">
           <Link to="/logout" className="sideview">
             Logout
@@ -42,6 +43,7 @@ export default class Add_Leave extends Component {
               </Link>
               </div>
 
+              </div>
               </div>
          <Footer/>
             </>
