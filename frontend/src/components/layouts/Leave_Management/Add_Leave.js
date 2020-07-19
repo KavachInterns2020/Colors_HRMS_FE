@@ -13,7 +13,7 @@ export default class Add_Leave extends Component {
           </Link>
           
           <div class="w3-container">
-            <Link to="/Recieved_form">
+            <Link to="/Leave_info">
               <div
                 class="w3-panel w3-card"
                 style={{
