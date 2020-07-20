@@ -5,24 +5,40 @@ import { Link, Redirect } from "react-router-dom";
 import Navbar from "../../static/Navbar";
 import Footer from "../../static/Footer";
 
-
-
 class Apply_leave extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-        user_name:"",
-        email1:"",
-        start_date:"",
-        end_date:"" ,
-        reason:"",
-        leave: "sick",
-      
-      
+      employee_id: "",
+      email: "",
+      start_date: "",
+      end_date: "",
+      remark: "",
+      leave: "",
       token: localStorage.getItem("token"),
       isLoading: false,
+      leave_list: [],
     };
+
+    axios
+      .get("http://localhost:8000/leave/list/", {
+        headers: { Authorization: `Token ${this.state.token}` },
+      })
+      .then((res) => {
+        console.log(res.data);
+        let data = res.data;
+        if (data.status === "success") {
+          console.log(data["data"]);
+          this.setState({ leave_list: data["data"], leave: data["data"][0].fields.leave_slug });
+        } else if (data.status === "failed") {
+          console.log(data["data"]);
+          alert(data["err_message"]);
+        }
+      })
+      .catch((err) => {
+        alert(err);
+      });
   }
 
   handleChange = (e) => {
@@ -33,15 +49,14 @@ class Apply_leave extends Component {
 
   resetHandler = () => {
     this.setState({
-        user_name:"",
-        email1:"",
-        start_date:"",
-        end_date:"" ,
-        reason:"",
-        leave: "sick"
-      
-    })
-  }
+      employee_id: "",
+      email: "",
+      start_date: "",
+      end_date: "",
+      remark: "",
+      leave: "",
+    });
+  };
 
   handleSubmit = (event) => {
     event.preventDefault();
@@ -49,7 +64,7 @@ class Apply_leave extends Component {
     this.setState({ isLoading: true }, () => {
       axios
         .post(
-          `****`,
+          `http://localhost:8000/leave/${this.state.employee_id}/apply/${this.state.leave}/`,
           { body: { data: this.state } },
           {
             headers: { Authorization: `Token ${this.state.token}` },
@@ -60,13 +75,13 @@ class Apply_leave extends Component {
             console.log(res.data);
             this.resetHandler();
           } else if (res.data.status === "failed") {
-            alert("Error! something went wrong please check the form")
+            alert("Error! something went wrong please check the form");
           }
           this.setState({ isLoading: false });
         })
         .catch((err) => {
           console.log(err);
-          alert("Error! server hanged")
+          alert("Error! server hanged");
           this.setState({ isLoading: false });
         });
     });
@@ -74,52 +89,61 @@ class Apply_leave extends Component {
 
   render() {
     const {
-      user_name,
-      email1,
+      employee_id,
+      email,
       start_date,
-      end_date ,
+      end_date,
       leave,
-      reason,
-    
+      remark,
     } = this.state;
-
 
     return (
       <>
-       
         <Navbar />
         <div className="app crud-form">
-          <Link to="/logout" className="sideview">Logout</Link>
+          <Link to="/logout" className="sideview">
+            Logout
+          </Link>
           <form onSubmit={this.handleSubmit} style={{ marginBottom: "70px" }}>
-            
             <div>
-              <label>User Name</label>
+              <label>Employee ID</label>
               <input
                 type="text"
-                name="user_name"
-                value={user_name}
+                name="employee_id"
+                value={employee_id}
                 onChange={this.handleChange}
                 required
               />
             </div>
-            
-            
+
             <div>
               <label>Email</label>
               <input
                 type="email"
-                name="email1"
-                value={email1}
+                name="email"
+                value={email}
                 onChange={this.handleChange}
                 required
               />
             </div>
             <div>
               <label>Leave Type</label>
-              <select name="leave" value={leave} onChange={this.handleChange} >
-                <option value="sick">Sick</option>
-                <option value="casual">Casual</option>
-                <option value="Paid">Paid</option>
+              <select
+                name="leave"
+                value={this.state.leave}
+                onChange={this.handleChange}
+              >
+                {!this.state.leave_list.length ? (
+                  <option value={"-----"}>
+                    NO LEAVE
+                  </option>
+                ) : (
+                  this.state.leave_list.map((leave) => (
+                    <option value={leave.fields.leave_slug}>
+                      {leave.fields.leave_type}
+                    </option>
+                  ))
+                )}
               </select>
             </div>
             <div>
@@ -143,20 +167,17 @@ class Apply_leave extends Component {
               />
             </div>
             <div>
-              <label>Reason For Leave </label>
+              <label>Reason</label>
               <textarea
                 row="3"
                 cols="15"
-                name="reason"
-                value={reason}
+                name="remark"
+                value={remark}
                 onChange={this.handleChange}
                 required
               />
             </div>
-            
-            
-            
-            
+
             <button type="submit">Apply</button>
           </form>
         </div>

@@ -29,7 +29,7 @@ export default class Em_page extends Component {
 
         <div className="app">
           <Link to="/logout">Logout</Link>
-          <div class="container" style={{marginLeft:"550px"}}>
+          <div class="container" style={{ marginLeft: "550px" }}>
             <div class="card">
               <Link to="/Record">
                 <div class="face face1">
@@ -44,16 +44,15 @@ export default class Em_page extends Component {
                 <div class="content">
                   <p style={{ color: "black" }}>
                     <small style={{ fontSize: "20px" }}>
-                     You can apply and view the leaves here.
+                      You can apply and view the leaves here.
                     </small>
                   </p>
                   <a href="#">Read More</a>
                 </div>
               </div>
             </div>
-          
-            </div>
-</div>
+          </div>
+        </div>
         <Footer />
       </div>
     );

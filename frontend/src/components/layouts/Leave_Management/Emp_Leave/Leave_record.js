@@ -14,14 +14,11 @@ export default class Leave_record extends Component {
       qs: qs,
       token: localStorage.getItem("token"),
       application_list: [],
-      flag: true
+      flag: true,
     };
-  }
 
-  componentDidMount() {
-    console.log(this.state.qs);
     axios
-      .get(`*****`, {
+      .get(`http://localhost:8000/leave/${localStorage.getItem('username')}/records/`, {
         headers: {
           Authorization: `Token ${this.state.token}`,
         },
@@ -35,21 +32,6 @@ export default class Leave_record extends Component {
       });
   }
 
-  handleSubmit = (e) => {
-    e.preventDefault()
-    console.log(e.target.value);
-    console.log(e.target.name);
-
-    axios.post(`*****`, {body: {data: e.target.value}}, {
-      headers: { Authorization: `Token ${this.state.token}` },
-    }).then(res => {
-      console.log(res.data)
-      this.setState({flag: !this.state.flag});
-      this.componentDidMount();
-    }).catch(err => {
-
-    })
-  }
 
   render() {
     return (
@@ -59,28 +41,31 @@ export default class Leave_record extends Component {
           <Link to="/logout">Logout</Link>
           <div classNames="row">
             <div className="col-75">
-              
+              <div className="container2 accept-reject-block">  
+              {this.state.application_list.length == 0
+                ? ( <p>No application form....</p>)
+                : this.state.application_list.map((app) => (
                     <div className="container2 accept-reject-block">
-                      <form className="accept-reject-form" onClick={this.handleSubmit}>
+                      <form className="accept-reject-form" key={app.pk} onClick={this.handleSubmit}>
                         <div>
-                          <h3>username:<input type="text"/> </h3>
+                          <h3>username: {app.fields.employee_id}</h3>
+                          <hr />
+                          <p>Remarks: {app.fields.remark}</p>
                           <p>
-                            date from <input type="date"/> 
+                            date from {app.fields.start_date} to{" "}
+                            {app.fields.end_date}{" "}
                           </p>
                         </div>
-
-                        <div className="row accept-decline">
-                          <input
-                            type="button"
-                            value={""}
-                            name="accept"
+                        <input
+                            type="submit"
+                            value={app.fields.approval=="A"?"Approved":(app.fields.approval=="P")? "Pending": "Declined"}
+                            name={app.pk}
                             className="btn2 right-allign-button"
                           />
-                          
-                        </div>
                       </form>
                     </div>
-                  
+                  ))}
+              </div>
             </div>
           </div>
         </div>

@@ -5,46 +5,39 @@ import Header from "../components/templates/Header";
 import Navbar from "../components/layouts/static/Navbar";
 import Footer from "../components/layouts/static/Footer";
 
-
-
 class SignInForm extends React.Component {
   constructor(props) {
     super(props);
-  
 
-    
     this.state = {
       username: "",
       password: "",
-   
-     
     };
-
-   
   }
 
-  onChange=(e)=> {
+  onChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value,
     });
-  }
+  };
 
-  /*submitForm(e) {
+  submitForm = (e) => {
     e.preventDefault();
-      const { username, password } = this.state;
+    const { username, password } = this.state;
 
     this.setState({ isLoading: true }, () => {
       console.log(this.state.isLoading);
       axios
-        .post("****", {
+        .post("http://localhost:8000/rest-auth/login/", {
           username: this.state.username,
           password: this.state.password,
         })
         .then((res) => {
           localStorage.setItem("token", res.data.key);
+          localStorage.setItem("username", this.state.username);
           this.setState({
             loggedIn: true,
-            isLoading: false
+            isLoading: false,
           });
         })
         .catch((err) => {
@@ -54,20 +47,16 @@ class SignInForm extends React.Component {
           });
         });
     });
-  }*/
+  };
 
-  render()
-  
-  {
+  render() {
     if (this.state.loggedIn) {
-      return <Redirect to="/HR_page" />;
+      return <Redirect to="/Em_page" />;
     }
     return (
       <>
         <Navbar />
         <div className="app login-form">
-    
-
           <Header />
           <div className="loginForm">
             <form onSubmit={this.submitForm}>
@@ -90,8 +79,8 @@ class SignInForm extends React.Component {
               <div>
                 <br />
               </div>
-              <Link to="Em_page">
-              <input className="btn  submitButton" type="submit" />
+              <Link to="/Em_page">
+                <input className="btn  submitButton" type="submit" onClick={this.submitForm} />
               </Link>
             </form>
           </div>
@@ -103,9 +92,3 @@ class SignInForm extends React.Component {
 }
 
 export default SignInForm;
-
-/*const mapDispatchToProps = (dispatch, ownProps) => {
-  return { loggedin: (token) => dispatch(authLogin(token)) };
-};
-
-export default connect(null, mapDispatchToProps)(LoginForm);*/
