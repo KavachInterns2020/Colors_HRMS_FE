@@ -49,40 +49,62 @@ to {transform:rotate(360deg);}
 }
 
 /* patching up css */
-.crud-form form {
+/* .crud-form form {
   width: 60% !important;
 }
 
 .login-form input {
   margin: 10px !important;
-}
+} */
 
-label {
+/* label {
   margin-right: 0 !important;
   display: inline-block;
   width: 50%;
-}
+} */
 
-input, option, select {
+/* input, option, select {
   float: right;
   width: 50%;
-}
+} */
 
 
-.sideview{
+/* .sideview{
   width: 100%;
   text-align: right;
   margin: 20px;
   padding-right: 20px;
-}
-
-button {
+} */
+/* 
+form button {
   background-color: #4CAF50; /* Green */
-  border: none;
+  /* border: none;
   color: white;
   padding: 5px 12px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
+} */
+
+.leave-info-card {
+  margin-bottom: 30px;
+}
+
+.accept-decline input{
+  width: 50% !important;
+}
+
+.left-allign-button{
+  margin-right: 2px;
+  padding-right: 2px;
+}
+
+.accept-reject-form{
+  padding: 20px;
+  color: black;
+}
+
+.accept-reject-block {
+  margin-top: 30px;
 }

@@ -1,18 +1,21 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 import axios from "axios";
 import { Link, Redirect } from "react-router-dom";
 import Navbar from "../static/Navbar";
 import Footer from "../static/Footer";
+import Spinner from "../static/Spinner";
+
 export default class Type_of extends Component {
-    
-    constructor(props) {
+  constructor(props) {
     super(props);
 
     this.state = {
-        leave_type: "",
-        leave_description: "",
-        total_days: ""
-      };
+      leave_type: "",
+      leave_description: "",
+      total_days: "",
+      isLoading: false,
+      token: localStorage.getItem('token')
+    };
   }
 
   handleChange = (e) => {
@@ -23,13 +26,11 @@ export default class Type_of extends Component {
 
   resetHandler = () => {
     this.setState({
-      
       leave_type: "",
       leave_description: "",
-      total_days: ""
-      
-    })
-  }
+      total_days: "",
+    });
+  };
 
   handleSubmit = (event) => {
     event.preventDefault();
@@ -37,7 +38,7 @@ export default class Type_of extends Component {
     this.setState({ isLoading: true }, () => {
       axios
         .post(
-          `****`,
+          `http://localhost:8000/leave/create/`,
           { body: { data: this.state } },
           {
             headers: { Authorization: `Token ${this.state.token}` },
@@ -48,35 +49,28 @@ export default class Type_of extends Component {
             console.log(res.data);
             this.resetHandler();
           } else if (res.data.status === "failed") {
-            alert("Error! something went wrong please check the form")
+            alert("Error! something went wrong please check the form");
           }
           this.setState({ isLoading: false });
         })
         .catch((err) => {
           console.log(err);
-          alert("Error! server hanged")
+          alert("Error! server hanged");
           this.setState({ isLoading: false });
         });
     });
   };
 
   render() {
-    const {
-      leave_type,
-      leave_description,
-      total_days,
-      } = this.state;
+    const { leave_type, leave_description, total_days } = this.state;
 
-
-
-
-        return (
-            <div>
-                <Navbar />
+    return (
+      <div>
+        {this.state.isLoading ? <Spinner /> : null}
+        <Navbar />
         <div className="app">
           <Link to="/logout">Logout</Link>
           <form onSubmit={this.handleSubmit} style={{ marginBottom: "70px" }}>
-            
             <div>
               <label>Leave Type</label>
               <input
@@ -88,10 +82,11 @@ export default class Type_of extends Component {
               />
             </div>
             <div>
-              <br/><br/>
+              <br />
+              <br />
               <label>Leave Type Description</label>
               <textarea
-                rows="4" 
+                rows="4"
                 cols="50"
                 name="leave_description"
                 value={leave_description}
@@ -108,12 +103,13 @@ export default class Type_of extends Component {
                 required
               />
             </div>
-            <br/><br/>
+            <br />
+            <br />
             <button type="submit">Submit</button>
           </form>
-         </div>
+        </div>
         <Footer />
-            </div>
-        )
-    }
+      </div>
+    );
+  }
 }
