@@ -68,7 +68,7 @@ export default class HR_page extends Component {
                 <div class="content">
                   <p style={{ color: "black" }}>
                     <small style={{ fontSize: "20px" }}>
-                      This feature is for manageing the leaves applied by employee by approving/declining
+                      This feature is for manageing the leaves applied by employee
                     </small>
                   </p>
 

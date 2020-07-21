@@ -29,7 +29,7 @@ export default class Em_page extends Component {
 
         <div className="app">
           <Link to="/logout">Logout</Link>
-          <div class="container" style={{ marginLeft: "550px" }}>
+          <div class="container" style={{ marginLeft: "auto" }}>
             <div class="card">
               <Link to="/Record">
                 <div class="face face1">

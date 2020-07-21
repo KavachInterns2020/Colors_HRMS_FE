@@ -20,6 +20,7 @@
 .container .card{
   position: relative;
   cursor: pointer;
+  margin: auto;
 }
 
 .container .card .face{
@@ -188,7 +189,7 @@ label{
 }
 
 .input {
- box-sizing: border-box;
+ /* box-sizing: border-box; */
  outline: none;
  border: solid 2px #1189de;
  border-radius: 4px;
@@ -259,8 +260,8 @@ label{
   border-radius: 3px;
 }
 
-input[type=text] {
-  width: 300px;
+input[type=text],input[type=date] , input[type=email] {
+  /* width: 300px; */
   margin-bottom: 20px;
   padding: 12px;
   border: 1px solid #ccc;
