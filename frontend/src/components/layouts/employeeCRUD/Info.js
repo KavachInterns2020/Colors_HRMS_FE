@@ -153,11 +153,12 @@ export default class Info extends Component {
           <Link to="/logout" className="sideview">
             Logout
           </Link>
-          <div className="topnav">
+          <div  className="form-group">
             <input
               type="text"
               placeholder="employee id"
               name="employee_id"
+              className="form-control form-control-lg"
               list="datalist"
               autoComplete="off"
               value={this.state.employee_id}
@@ -169,7 +170,7 @@ export default class Info extends Component {
                 <option value={id}></option>
               ))}
             </datalist>
-            <button onClick={this.submitHandler}>Search</button>
+            <button onClick={this.submitHandler} className="btn">Search</button>
             {this.state.err_message ? (
               <p className="err-text">{this.state.err_message}</p>
             ) : null}

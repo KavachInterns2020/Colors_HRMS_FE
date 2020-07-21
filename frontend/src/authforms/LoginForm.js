@@ -49,15 +49,15 @@ class LoginForm extends React.Component {
           localStorage.setItem("token", res.data.key);
           this.setState({
             loggedIn: true,
-            isLoading: false
+            isLoading: false,
           });
         })
         .catch((err) => {
           console.log(err.response.data);
           console.log(err.response.status);
           this.setState({ isLoading: false });
-          if(err.response.status>=400 && err.response.status<=403) {
-            this.setState({err_message: "Invalid Credential"})
+          if (err.response.status >= 400 && err.response.status <= 403) {
+            this.setState({ err_message: "Invalid Credential" });
           }
         });
     });
@@ -75,32 +75,37 @@ class LoginForm extends React.Component {
 
           <Header />
           <div className="loginForm">
-          <h2 className="login-header">Login as HR</h2>
+            <h2 className="login-header">Login as HR</h2>
             <form onSubmit={this.submitForm}>
-              <input
-                className="form-control form-control-lg"
-                type="text"
-                name="username"
-                placeholder="Username"
-                value={this.state.Username}
-                onChange={this.onChange}
-                required
-              />
-              <input
-                className="form-control form-control-lg"
-                type="password"
-                placeholder="password"
-                name="password"
-                value={this.state.password}
-                onChange={this.onChange}
-                required
-              />
+              <div className="form-group">
+                <input
+                  className="form-control form-control-lg"
+                  type="text"
+                  name="username"
+                  placeholder="Username"
+                  value={this.state.Username}
+                  onChange={this.onChange}
+                  style={{width: 100+"%"}}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <input
+                  className="form-control form-control-lg"
+                  type="password"
+                  placeholder="password"
+                  name="password"
+                  value={this.state.password}
+                  onChange={this.onChange}
+                  required
+                />
+              </div>
               <div>
                 <p></p>
               </div>
-              {
-                this.state.err_message? <p className="err-text">{this.state.err_message}</p>: null
-              }
+              {this.state.err_message ? (
+                <p className="err-text">{this.state.err_message}</p>
+              ) : null}
               <input className="btn  submitButton" type="submit" />
             </form>
           </div>

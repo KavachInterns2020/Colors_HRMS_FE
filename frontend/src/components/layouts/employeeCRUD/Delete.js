@@ -91,7 +91,7 @@ class Delete extends Component {
           </Link>
 
           <form onSubmit={this.handleSubmit}>
-            <div>
+            <div className="form-group">
               <label>Employee id </label>
               <input
                 type="text"
@@ -99,6 +99,7 @@ class Delete extends Component {
                 value={employee_id}
                 list="datalist"
                 autoComplete="off"
+                className="form-control form-control-lg"
                 onChange={this.handleIdChange}
               />
               <datalist id="datalist">
@@ -111,7 +112,7 @@ class Delete extends Component {
               <p className="err-text">{this.state.err_message}</p>
             ) : null}
 
-            <button type="submit">Delete</button>
+            <button type="submit" className="btn btn-primary btn-lg btn-block">Delete</button>
           </form>
         </div>
         <Footer />

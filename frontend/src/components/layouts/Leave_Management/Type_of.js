@@ -81,44 +81,42 @@ export default class Type_of extends Component {
         <div className="app">
           <Link to="/logout">Logout</Link>
           <form onSubmit={this.handleSubmit} style={{ marginBottom: "70px" }}>
-            <div>
+            <div className="form-group">
               <label>Leave Type</label>
               <input
                 type="text"
                 name="leave_type"
+                className="form-control form-control-lg"
                 value={leave_type}
                 onChange={this.handleChange}
                 required
               />
             </div>
-            <div>
-              <br />
-              <br />
+            <div className="form-group">
               <label>Leave Type Description</label>
               <textarea
-                rows="4"
-                cols="50"
+                rows="3"
                 name="leave_description"
+                className="form-control form-control-lg"
                 value={leave_description}
                 onChange={this.handleChange}
               />
             </div>
-            <div>
+            <div className="form-group">
               <label>Total Days Allowed</label>
               <input
                 type="text"
                 name="total_days"
+                className="form-control form-control-lg"
                 value={total_days}
                 onChange={this.handleChange}
                 required
               />
             </div>
-            <br />
-            <br />
             {this.state.err_message ? (
               <p className="err-text">{this.state.err_message}</p>
             ) : null}
-            <button type="submit">Submit</button>
+             <button type="submit" className="btn btn-primary btn-lg btn-block">Submit</button>
           </form>
         </div>
         <Footer />

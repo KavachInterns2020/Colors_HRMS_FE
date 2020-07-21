@@ -20,7 +20,7 @@ class Apply_leave extends Component {
       token: localStorage.getItem("token"),
       isLoading: false,
       leave_list: [],
-      err_message: ""
+      err_message: "",
     };
     this.setState({ isLoading: true });
     axios
@@ -122,33 +122,36 @@ class Apply_leave extends Component {
             Logout
           </Link>
           <form onSubmit={this.handleSubmit} style={{ marginBottom: "70px" }}>
-            <div>
+            <div className="form-group">
               <label>Employee ID</label>
               <input
                 type="text"
                 name="employee_id"
+                className="form-control form-control-lg"
                 value={employee_id}
                 onChange={this.handleChange}
                 required
               />
             </div>
 
-            <div>
+            <div className="form-group">
               <label>Email</label>
               <input
                 type="email"
                 name="email"
+                className="form-control form-control-lg"
                 value={email}
                 onChange={this.handleChange}
                 required
               />
             </div>
-            <div>
+            <div className="form-group">
               <label>Leave Type</label>
               <select
                 name="leave"
                 value={this.state.leave}
                 onChange={this.handleChange}
+                className="form-control form-control-lg"
               >
                 {!this.state.leave_list.length ? (
                   <option value={"-----"}>NO LEAVE</option>
@@ -161,32 +164,35 @@ class Apply_leave extends Component {
                 )}
               </select>
             </div>
-            <div>
+            <div className="form-group">
               <label>Start Date </label>
               <input
                 type="date"
                 name="start_date"
+                className="form-control form-control-lg"
                 value={start_date}
                 onChange={this.handleChange}
                 required
               />
             </div>
-            <div>
+            <div className="form-group">
               <label>End Date </label>
               <input
                 type="date"
                 name="end_date"
+                className="form-control form-control-lg"
                 value={end_date}
                 onChange={this.handleChange}
                 required
               />
             </div>
-            <div>
+            <div className="form-group">
               <label>Reason</label>
               <textarea
                 row="3"
                 cols="15"
                 name="remark"
+                className="form-control form-control-lg"
                 value={remark}
                 onChange={this.handleChange}
                 required
@@ -196,7 +202,9 @@ class Apply_leave extends Component {
               <p className="err-text">{this.state.err_message}</p>
             ) : null}
 
-            <button type="submit">Apply</button>
+            <button type="submit" className="btn btn-primary btn-lg btn-block">
+              Submit
+            </button>
           </form>
         </div>
         <Footer />
