@@ -4,6 +4,7 @@ import { Link, Redirect } from "react-router-dom";
 import Header from "../components/templates/Header";
 import Navbar from "../components/layouts/static/Navbar";
 import Footer from "../components/layouts/static/Footer";
+import Spinner from "../components/layouts/static/Spinner";
 
 class SignInForm extends React.Component {
   constructor(props) {
@@ -12,6 +13,8 @@ class SignInForm extends React.Component {
     this.state = {
       username: "",
       password: "",
+      isLoading: false,
+      err_message: "",
     };
   }
 
@@ -41,10 +44,10 @@ class SignInForm extends React.Component {
           });
         })
         .catch((err) => {
-          console.log(err);
-          this.setState({ isLoading: false }, () => {
-            alert("Invalid username or password");
-          });
+          this.setState({ isLoading: false });
+          if(err.response.status>=400 && err.response.status<=403) {
+            this.setState({err_message: "Invalid Credential"})
+          }
         });
     });
   };
@@ -55,6 +58,7 @@ class SignInForm extends React.Component {
     }
     return (
       <>
+      {this.state.isLoading ? <Spinner /> : null}
         <Navbar />
         <div className="app login-form">
           <Header />
@@ -64,21 +68,28 @@ class SignInForm extends React.Component {
                 className="input"
                 type="text"
                 name="username"
+                autoComplete="off"
                 placeholder="Employee name"
                 value={this.state.Username}
                 onChange={this.onChange}
+                required
               />
               <input
                 className="input"
                 type="password"
                 placeholder="Employee ID"
+                autoComplete="off"
                 name="password"
                 value={this.state.password}
                 onChange={this.onChange}
+                required
               />
               <div>
-                <br />
+                <p></p>
               </div>
+              {
+                this.state.err_message? <p className="err-text">{this.state.err_message}</p>: null
+              }
               <Link to="/Em_page">
                 <input className="btn  submitButton" type="submit" onClick={this.submitForm} />
               </Link>

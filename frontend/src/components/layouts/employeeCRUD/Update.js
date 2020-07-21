@@ -28,7 +28,26 @@ class Update extends Component {
       department: "",
       token: localStorage.getItem("token"),
       isLoading: false,
+      id_list: [],
+      err_message: ""
     };
+
+    axios
+      .get(`http://127.0.0.1:8000/employee/list/employeeids/`, {
+        headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+      })
+      .then((res) => {
+        let data = res.data["data"];
+        let lst = [];
+        for (let i = 0; i < data.length; i++) {
+          lst.push(data[i]["pk"]);
+        }
+        console.log(lst);
+        this.setState({ id_list: lst });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   handleChange = (e) => {
@@ -61,7 +80,7 @@ class Update extends Component {
     const { token, employee_id } = this.state;
     console.log(token, employee_id);
 
-    this.setState({ isLoading: true }, () => {
+    this.setState({ isLoading: true, err_message:"" }, () => {
       axios
         .post(
           `http://127.0.0.1:8000/employee/${employee_id}/update/`,
@@ -72,19 +91,26 @@ class Update extends Component {
         )
         .then((res) => {
           if (res.data.status === "success") {
-            console.log("The Employee had updated");
             console.log(res.data);
-            alert("Updated successfully");
             this.resetHandler();
           } else if (res.data.status === "failed") {
-            console.log("no employee record");
-            alert("Error! something went wrong please check the form");
+            this.setState({ err_message: res.data.err_message });
           }
           this.setState({ isLoading: false });
         })
         .catch((err) => {
-          console.log(err);
           this.setState({ isLoading: false });
+          if (err.response.status >= 400 && err.response.status <= 403) {
+            this.setState({ err_message: "Request Denied" });
+          } else if (err.response.status == 404) {
+            this.setState({
+              err_message: "Request not found, unknown request",
+            });
+          } else if (err.response.status == 500) {
+            this.setState({
+              err_message: "Server error, try later or inform developer...",
+            });
+          }
         });
     });
   };
@@ -121,9 +147,16 @@ class Update extends Component {
               <input
                 type="text"
                 name="employee_id"
+                list="datalist"
+                autoComplete="off"
                 value={employee_id}
                 onChange={this.handleChange}
               />
+              <datalist id="datalist">
+                {this.state.id_list.map((id) => (
+                  <option value={id}></option>
+                ))}
+              </datalist>
             </div>
             <div>
               <label>First Name</label>
@@ -241,6 +274,9 @@ class Update extends Component {
                 onChange={this.handleChange}
               />
             </div>
+            {this.state.err_message ? (
+              <p className="err-text">{this.state.err_message}</p>
+            ) : null}
             <button type="submit">Submit</button>
           </form>
         </div>

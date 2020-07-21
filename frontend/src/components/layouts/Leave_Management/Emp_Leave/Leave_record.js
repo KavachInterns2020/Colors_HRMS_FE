@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link, Redirect } from "react-router-dom";
 import Navbar from "../../static/Navbar";
 import Footer from "../../static/Footer";
+import Spinner from "../../static/Spinner";
 
 export default class Leave_record extends Component {
   constructor(props) {
@@ -15,8 +16,9 @@ export default class Leave_record extends Component {
       token: localStorage.getItem("token"),
       application_list: [],
       flag: true,
+      isLoading: false,
     };
-
+    this.setState({ isLoading: true });
     axios
       .get(`http://localhost:8000/leave/${localStorage.getItem('username')}/records/`, {
         headers: {
@@ -26,9 +28,11 @@ export default class Leave_record extends Component {
       .then((res) => {
         console.log(res.data);
         this.setState({ application_list: res.data["data"] });
+        this.setState({ isLoading: false });
       })
       .catch((err) => {
         console.log(err);
+        this.setState({ isLoading: false });
       });
   }
 

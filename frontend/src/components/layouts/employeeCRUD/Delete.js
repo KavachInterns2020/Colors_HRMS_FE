@@ -15,7 +15,26 @@ class Delete extends Component {
       employee_id: "",
       token: localStorage.getItem("token"),
       isLoading: false,
+      id_list: [],
+      err_message:""
     };
+
+    axios
+      .get(`http://127.0.0.1:8000/employee/list/employeeids/`, {
+        headers: { Authorization: `Token ${localStorage.getItem("token")}` },
+      })
+      .then((res) => {
+        let data = res.data["data"];
+        let lst = [];
+        for (let i = 0; i < data.length; i++) {
+          lst.push(data[i]["pk"]);
+        }
+        console.log(lst);
+        this.setState({ id_list: lst });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   handleIdChange = (event) => {
@@ -29,26 +48,33 @@ class Delete extends Component {
     const { token, employee_id } = this.state;
     console.log(token, employee_id);
 
-    this.setState({ isLoading: true }, () => {
+    this.setState({ isLoading: true, err_message: "" }, () => {
+
       axios
         .get(`http://127.0.0.1:8000/employee/${employee_id}/delete/`, {
           headers: { Authorization: `Token ${token}` },
         })
         .then((res) => {
           if (res.data.status === "success") {
-            console.log("The Employee had removed");
-            console.log(res.data);
             this.setState({ employee_id: "" });
-            alert("Employee record removed");
           } else if (res.data.status === "failed") {
-            alert("No employee record");
+            this.setState({err_message: "No employee rercord found"})
           }
           this.setState({ isLoading: false });
         })
         .catch((err) => {
-          console.log(err);
-          alert("Server Error");
           this.setState({ isLoading: false });
+          if (err.response.status >= 400 && err.response.status <= 403) {
+            this.setState({ err_message: "Request Denied" });
+          } else if (err.response.status == 404) {
+            this.setState({
+              err_message: "Request not found, unknown request",
+            });
+          } else if (err.response.status == 500) {
+            this.setState({
+              err_message: "Server error, try later or inform developer...",
+            });
+          }
         });
     });
   };
@@ -63,6 +89,7 @@ class Delete extends Component {
           <Link to="/logout" className="sideview">
             Logout
           </Link>
+
           <form onSubmit={this.handleSubmit}>
             <div>
               <label>Employee id </label>
@@ -70,9 +97,19 @@ class Delete extends Component {
                 type="text"
                 name="employee_id"
                 value={employee_id}
+                list="datalist"
+                autoComplete="off"
                 onChange={this.handleIdChange}
               />
+              <datalist id="datalist">
+                {this.state.id_list.map(id => (
+                  <option value={id}></option>
+                ))}
+              </datalist>
             </div>
+            {this.state.err_message ? (
+              <p className="err-text">{this.state.err_message}</p>
+            ) : null}
 
             <button type="submit">Delete</button>
           </form>

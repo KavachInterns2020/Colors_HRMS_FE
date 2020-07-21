@@ -14,7 +14,8 @@ export default class Type_of extends Component {
       leave_description: "",
       total_days: "",
       isLoading: false,
-      token: localStorage.getItem('token')
+      token: localStorage.getItem('token'),
+      err_message: ""
     };
   }
 
@@ -35,7 +36,7 @@ export default class Type_of extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     console.log(this.state);
-    this.setState({ isLoading: true }, () => {
+    this.setState({ isLoading: true, err_message: "" }, () => {
       axios
         .post(
           `http://localhost:8000/leave/create/`,
@@ -49,14 +50,23 @@ export default class Type_of extends Component {
             console.log(res.data);
             this.resetHandler();
           } else if (res.data.status === "failed") {
-            alert("Error! something went wrong please check the form");
+            this.setState({ err_message: res.data.err_message });
           }
           this.setState({ isLoading: false });
         })
         .catch((err) => {
-          console.log(err);
-          alert("Error! server hanged");
           this.setState({ isLoading: false });
+          if (err.response.status >= 400 && err.response.status <= 403) {
+            this.setState({ err_message: "Request Denied" });
+          } else if (err.response.status == 404) {
+            this.setState({
+              err_message: "Request not found, unknown request",
+            });
+          } else if (err.response.status == 500) {
+            this.setState({
+              err_message: "Server error, try later or inform developer...",
+            });
+          }
         });
     });
   };
@@ -105,6 +115,9 @@ export default class Type_of extends Component {
             </div>
             <br />
             <br />
+            {this.state.err_message ? (
+              <p className="err-text">{this.state.err_message}</p>
+            ) : null}
             <button type="submit">Submit</button>
           </form>
         </div>

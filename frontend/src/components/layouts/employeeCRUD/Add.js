@@ -28,6 +28,7 @@ class Add extends Component {
       department: "",
       token: localStorage.getItem("token"),
       isLoading: false,
+      err_message: "",
     };
   }
 
@@ -53,13 +54,14 @@ class Add extends Component {
       state: "",
       pincode: "",
       department: "",
-    })
-  }
+      err_message: "",
+    });
+  };
 
   handleSubmit = (event) => {
     event.preventDefault();
     console.log(this.state);
-    this.setState({ isLoading: true }, () => {
+    this.setState({ isLoading: true, err_message: "" }, () => {
       axios
         .post(
           `http://127.0.0.1:8000/employee/create/`,
@@ -73,14 +75,25 @@ class Add extends Component {
             console.log(res.data);
             this.resetHandler();
           } else if (res.data.status === "failed") {
-            alert("Error! something went wrong please check the form")
+            this.setState({ err_message: res.data.err_message });
           }
           this.setState({ isLoading: false });
         })
         .catch((err) => {
-          console.log(err);
-          alert("Error! server hanged")
+          console.log(err.response.data);
+          console.log(err.response.status);
           this.setState({ isLoading: false });
+          if (err.response.status >= 400 && err.response.status <= 403) {
+            this.setState({ err_message: "Request Denied" });
+          } else if (err.response.status == 404) {
+            this.setState({
+              err_message: "Request not found, unknown request",
+            });
+          } else if (err.response.status == 500) {
+            this.setState({
+              err_message: "Server error, try later or inform developer...",
+            });
+          }
         });
     });
   };
@@ -93,24 +106,26 @@ class Add extends Component {
       last_name,
       email,
       gender,
-      date_of_birth ,
+      date_of_birth,
       phone_number,
       door_no,
       street,
       area,
       state,
       pincode,
-      department
+      department,
     } = this.state;
-
 
     return (
       <>
         {this.state.isLoading ? <Spinner /> : null}
         <Navbar />
         <div className="app crud-form">
-          <Link to="/logout" className="sideview">Logout</Link>
+          <Link to="/logout" className="sideview">
+            Logout
+          </Link>
           <form onSubmit={this.handleSubmit} style={{ marginBottom: "70px" }}>
+            
             <div>
               <label>Employee id </label>
               <input
@@ -162,7 +177,7 @@ class Add extends Component {
             </div>
             <div>
               <label>Gender</label>
-              <select name="gender" value={gender} onChange={this.handleChange} >
+              <select name="gender" value={gender} onChange={this.handleChange}>
                 <option value="male">male</option>
                 <option value="Female">Female</option>
                 <option value="Between">Between</option>
@@ -248,6 +263,9 @@ class Add extends Component {
                 required
               />
             </div>
+            {this.state.err_message ? (
+              <p className="err-text">{this.state.err_message}</p>
+            ) : null}
             <button type="submit">Submit</button>
           </form>
         </div>

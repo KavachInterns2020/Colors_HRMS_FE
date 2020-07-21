@@ -21,6 +21,7 @@ class LoginForm extends React.Component {
       password: "",
       loggedIn,
       isLoading: false,
+      err_message: "",
     };
 
     this.onChange = this.onChange.bind(this);
@@ -37,7 +38,7 @@ class LoginForm extends React.Component {
     e.preventDefault();
     const { username, password } = this.state;
 
-    this.setState({ isLoading: true }, () => {
+    this.setState({ isLoading: true, err_message: "" }, () => {
       console.log(this.state.isLoading);
       axios
         .post("http://localhost:8000/rest-auth/login/", {
@@ -52,10 +53,12 @@ class LoginForm extends React.Component {
           });
         })
         .catch((err) => {
-          console.log(err);
-          this.setState({ isLoading: false }, () => {
-            alert("Invalid username or password");
-          });
+          console.log(err.response.data);
+          console.log(err.response.status);
+          this.setState({ isLoading: false });
+          if(err.response.status>=400 && err.response.status<=403) {
+            this.setState({err_message: "Invalid Credential"})
+          }
         });
     });
   }
@@ -80,18 +83,23 @@ class LoginForm extends React.Component {
                 placeholder="Username"
                 value={this.state.Username}
                 onChange={this.onChange}
+                required
               />
               <input
                 className="input"
                 type="password"
-                placeholder="ID"
+                placeholder="password"
                 name="password"
                 value={this.state.password}
                 onChange={this.onChange}
-              />{" "}
+                required
+              />
               <div>
-                <br />
+                <p></p>
               </div>
+              {
+                this.state.err_message? <p className="err-text">{this.state.err_message}</p>: null
+              }
               <input className="btn  submitButton" type="submit" />
             </form>
           </div>
@@ -103,9 +111,3 @@ class LoginForm extends React.Component {
 }
 
 export default LoginForm;
-
-/*const mapDispatchToProps = (dispatch, ownProps) => {
-  return { loggedin: (token) => dispatch(authLogin(token)) };
-};
-
-export default connect(null, mapDispatchToProps)(LoginForm);*/

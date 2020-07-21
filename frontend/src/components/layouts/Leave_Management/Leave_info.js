@@ -3,6 +3,8 @@ import axios from "axios";
 import { Link, Redirect } from "react-router-dom";
 import Navbar from "../static/Navbar";
 import Footer from "../static/Footer";
+import Spinner from "../static/Spinner";
+
 export default class Leave_info extends Component {
   constructor(props) {
     super(props);
@@ -10,10 +12,12 @@ export default class Leave_info extends Component {
     this.state = {
       leave_list: [],
       token: localStorage.getItem("token"),
+      isLoading: false,
     };
   }
 
   componentDidMount() {
+    this.setState({ isLoading: true });
     axios
       .get("http://localhost:8000/leave/list/", {
         headers: { Authorization: `Token ${this.state.token}` },
@@ -27,9 +31,11 @@ export default class Leave_info extends Component {
         } else if (data.status === "failed") {
           alert(data["err_message"]);
         }
+        this.setState({ isLoading: false });
       })
       .catch((err) => {
         alert(err);
+        this.setState({ isLoading: false });
       });
   }
 
@@ -38,6 +44,7 @@ export default class Leave_info extends Component {
     console.log(leave_list);
     return (
       <div>
+        {this.state.isLoading ? <Spinner /> : null}
         <Navbar />
 
         <div className="app">

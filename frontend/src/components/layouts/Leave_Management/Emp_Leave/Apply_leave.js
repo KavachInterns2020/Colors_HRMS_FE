@@ -4,6 +4,7 @@ import axios from "axios";
 import { Link, Redirect } from "react-router-dom";
 import Navbar from "../../static/Navbar";
 import Footer from "../../static/Footer";
+import Spinner from "../../static/Spinner";
 
 class Apply_leave extends Component {
   constructor(props) {
@@ -19,8 +20,9 @@ class Apply_leave extends Component {
       token: localStorage.getItem("token"),
       isLoading: false,
       leave_list: [],
+      err_message: ""
     };
-
+    this.setState({ isLoading: true });
     axios
       .get("http://localhost:8000/leave/list/", {
         headers: { Authorization: `Token ${this.state.token}` },
@@ -30,14 +32,19 @@ class Apply_leave extends Component {
         let data = res.data;
         if (data.status === "success") {
           console.log(data["data"]);
-          this.setState({ leave_list: data["data"], leave: data["data"][0].fields.leave_slug });
+          this.setState({
+            leave_list: data["data"],
+            leave: data["data"][0].fields.leave_slug,
+          });
         } else if (data.status === "failed") {
           console.log(data["data"]);
           alert(data["err_message"]);
         }
+        this.setState({ isLoading: false });
       })
       .catch((err) => {
         alert(err);
+        this.setState({ isLoading: false });
       });
   }
 
@@ -61,7 +68,7 @@ class Apply_leave extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     console.log(this.state);
-    this.setState({ isLoading: true }, () => {
+    this.setState({ isLoading: true, err_message: "" }, () => {
       axios
         .post(
           `http://localhost:8000/leave/${this.state.employee_id}/apply/${this.state.leave}/`,
@@ -75,14 +82,23 @@ class Apply_leave extends Component {
             console.log(res.data);
             this.resetHandler();
           } else if (res.data.status === "failed") {
-            alert("Error! something went wrong please check the form");
+            this.setState({ err_message: res.data.err_message });
           }
           this.setState({ isLoading: false });
         })
         .catch((err) => {
-          console.log(err);
-          alert("Error! server hanged");
           this.setState({ isLoading: false });
+          if (err.response.status >= 400 && err.response.status <= 403) {
+            this.setState({ err_message: "Request Denied" });
+          } else if (err.response.status == 404) {
+            this.setState({
+              err_message: "Request not found, unknown request",
+            });
+          } else if (err.response.status == 500) {
+            this.setState({
+              err_message: "Server error, try later or inform developer...",
+            });
+          }
         });
     });
   };
@@ -99,6 +115,7 @@ class Apply_leave extends Component {
 
     return (
       <>
+        {this.state.isLoading ? <Spinner /> : null}
         <Navbar />
         <div className="app crud-form">
           <Link to="/logout" className="sideview">
@@ -134,9 +151,7 @@ class Apply_leave extends Component {
                 onChange={this.handleChange}
               >
                 {!this.state.leave_list.length ? (
-                  <option value={"-----"}>
-                    NO LEAVE
-                  </option>
+                  <option value={"-----"}>NO LEAVE</option>
                 ) : (
                   this.state.leave_list.map((leave) => (
                     <option value={leave.fields.leave_slug}>
@@ -177,6 +192,9 @@ class Apply_leave extends Component {
                 required
               />
             </div>
+            {this.state.err_message ? (
+              <p className="err-text">{this.state.err_message}</p>
+            ) : null}
 
             <button type="submit">Apply</button>
           </form>

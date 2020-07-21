@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link, Redirect } from "react-router-dom";
 import Navbar from "../static/Navbar";
 import Footer from "../static/Footer";
+import Spinner from "../static/Spinner";
 
 export default class Accept_dec extends Component {
   constructor(props) {
@@ -14,12 +15,14 @@ export default class Accept_dec extends Component {
       qs: qs,
       token: localStorage.getItem("token"),
       application_list: [],
-      flag: true
+      flag: true,
+      isLoading: false,
     };
   }
 
   componentDidMount() {
     console.log(this.state.qs);
+    this.setState({ isLoading: true });
     axios
       .get(`http://localhost:8000/leave/${this.state.qs}/list/`, {
         headers: {
@@ -29,9 +32,11 @@ export default class Accept_dec extends Component {
       .then((res) => {
         console.log(res.data);
         this.setState({ application_list: res.data["data"] });
+        this.setState({ isLoading: false });
       })
       .catch((err) => {
         console.log(err);
+        this.setState({ isLoading: false });
       });
   }
 
@@ -39,21 +44,24 @@ export default class Accept_dec extends Component {
     e.preventDefault()
     console.log(e.target.value);
     console.log(e.target.name);
-
+    this.setState({ isLoading: true });
     axios.post(`http://localhost:8000/leave/${e.target.name}/approval/`, {body: {data: e.target.value}}, {
       headers: { Authorization: `Token ${this.state.token}` },
     }).then(res => {
       console.log(res.data)
       this.setState({flag: !this.state.flag});
       this.componentDidMount();
+      this.setState({ isLoading: false });
     }).catch(err => {
-
+      console.log(err);
+      this.setState({ isLoading: false });
     })
   }
 
   render() {
     return (
       <div>
+        {this.state.isLoading ? <Spinner /> : null}
         <Navbar />
         <div className="app">
           <Link to="/logout">Logout</Link>
