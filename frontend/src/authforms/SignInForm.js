@@ -63,9 +63,10 @@ class SignInForm extends React.Component {
         <div className="app login-form">
           <Header />
           <div className="loginForm">
+            <h2 className="login-header">Login as Employee</h2>
             <form onSubmit={this.submitForm}>
               <input
-                className="input"
+                className="form-control form-control-lg"
                 type="text"
                 name="username"
                 autoComplete="off"
@@ -75,9 +76,9 @@ class SignInForm extends React.Component {
                 required
               />
               <input
-                className="input"
+                className="form-control form-control-lg"
                 type="password"
-                placeholder="Employee ID"
+                placeholder="password"
                 autoComplete="off"
                 name="password"
                 value={this.state.password}

@@ -75,9 +75,10 @@ class LoginForm extends React.Component {
 
           <Header />
           <div className="loginForm">
+          <h2 className="login-header">Login as HR</h2>
             <form onSubmit={this.submitForm}>
               <input
-                className="input"
+                className="form-control form-control-lg"
                 type="text"
                 name="username"
                 placeholder="Username"
@@ -86,7 +87,7 @@ class LoginForm extends React.Component {
                 required
               />
               <input
-                className="input"
+                className="form-control form-control-lg"
                 type="password"
                 placeholder="password"
                 name="password"

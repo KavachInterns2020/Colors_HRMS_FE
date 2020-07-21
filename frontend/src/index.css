@@ -117,3 +117,8 @@ form button {
   font-family: Arial, Helvetica, sans-serif;
   color: red;
 }
+
+.login-header{
+  text-align: center;
+  margin-bottom: 20px;
+}
