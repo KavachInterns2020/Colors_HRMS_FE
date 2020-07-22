@@ -30,7 +30,7 @@ class Apply_leave extends Component {
       .then((res) => {
         console.log(res.data);
         let data = res.data;
-        if (data.status === "success") {
+        if (data.status === "success" && data.data.length !== 0) {
           console.log(data["data"]);
           this.setState({
             leave_list: data["data"],
