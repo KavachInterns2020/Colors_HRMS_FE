@@ -43,6 +43,10 @@ export default class Info extends Component {
     });
   };
 
+  dateChanged=(d)=>{
+    this.setState({date_of_birth: d});
+  }
+
   resetHandler = () => {
     this.setState({
       employee_id: "",
@@ -125,7 +129,7 @@ export default class Info extends Component {
             marginBottom: "40px",
           }}
         >
-          <Link to="/logout"className="sideview">Logout</Link>
+       
           <div className="topnav">
             <input
               type="text"

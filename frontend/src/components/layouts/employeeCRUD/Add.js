@@ -1,12 +1,12 @@
-import React, { Component } from "react";
+import React, { Component,useState } from "react";
 import axios from "axios";
-
+import  DatePicker  from 'react-datepicker';
 import { Link, Redirect } from "react-router-dom";
 import Navbar from "../static/Navbar";
 import Footer from "../static/Footer";
 import Header from "../../templates/Header";
 import Spinner from "../static/Spinner";
-
+import 'react-datepicker/dist/react-datepicker.css';
 class Add extends Component {
   constructor(props) {
     super(props);
@@ -18,7 +18,7 @@ class Add extends Component {
       last_name: "",
       email: "",
       gender: "male",
-      date_of_birth: "",
+      date_of_birth:"",
       phone_number: "",
       door_no: "",
       street: "",
@@ -37,6 +37,10 @@ class Add extends Component {
     });
   };
 
+  dateChanged=(d)=>{
+    this.setState({date_of_birth: d});
+  }
+
   resetHandler = () => {
     this.setState({
       employee_id: "",
@@ -53,6 +57,11 @@ class Add extends Component {
       state: "",
       pincode: "",
       department: "",
+    })
+  }
+  Date=(e)=>{
+    this.setState({
+      date_of_birth:[e.target.value]
     })
   }
 
@@ -103,13 +112,12 @@ class Add extends Component {
       department
     } = this.state;
 
-
+ 
     return (
       <>
         {this.state.isLoading ? <Spinner /> : null}
         <Navbar />
         <div className="app crud-form">
-          <Link to="/logout" className="sideview">Logout</Link>
           <form onSubmit={this.handleSubmit} style={{ marginBottom: "70px" }}>
             <div>
               <label>Employee id </label>
@@ -170,13 +178,19 @@ class Add extends Component {
             </div>
             <div>
               <label>Dob </label>
-              <input
-                type="date"
-                name="date_of_birth"
-                value={date_of_birth}
-                onChange={this.handleChange}
-                required
-              />
+              
+               <DatePicker
+                  selected={this.state.date_of_birth}
+               width="100%"
+               name="date_of_birth"
+               onChange={this.dateChanged}
+               value={date_of_birth}
+              
+              maxDate={new Date()} 
+              showYearDropdown
+              scrollableYearDropdown 
+              required 
+                />
             </div>
             <div>
               <label>Phone no </label>

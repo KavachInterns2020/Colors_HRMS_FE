@@ -6,6 +6,8 @@ import Navbar from "../static/Navbar";
 import Footer from "../static/Footer";
 import Header from "../../templates/Header";
 import Spinner from "../static/Spinner";
+import  DatePicker  from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 class Update extends Component {
   constructor(props) {
@@ -18,7 +20,7 @@ class Update extends Component {
       last_name: "",
       email: "",
       gender: "",
-      date_of_birth: "male",
+      date_of_birth: "",
       phone_number: "",
       door_no: "",
       street: "",
@@ -36,6 +38,9 @@ class Update extends Component {
       [e.target.name]: e.target.value,
     });
   };
+  dateChanged=(d)=>{
+    this.setState({date_of_birth: d});
+  }
 
   resetHandler = () => {
     this.setState({
@@ -112,9 +117,7 @@ class Update extends Component {
         {this.state.isLoading ? <Spinner /> : null}
         <Navbar />
         <div className="app crud-form">
-          <Link to="/logout" className="sideview">
-            Logout
-          </Link>
+          
           <form onSubmit={this.handleSubmit} style={{ marginBottom: "70px" }}>
             <div>
               <label>Employee id </label>
@@ -171,12 +174,18 @@ class Update extends Component {
             </div>
             <div>
               <label>Dob </label>
-              <input
-                type="date"
-                name="date_of_birth"
-                value={date_of_birth}
-                onChange={this.handleChange}
-              />
+              <DatePicker
+                  selected={this.state.date_of_birth}
+               width="100%"
+               name="date_of_birth"
+               onChange={this.dateChanged}
+               value={date_of_birth}
+              
+              maxDate={new Date()} 
+              showYearDropdown
+              scrollableYearDropdown 
+              required 
+                />
             </div>
             <div>
               <label>Phone no </label>

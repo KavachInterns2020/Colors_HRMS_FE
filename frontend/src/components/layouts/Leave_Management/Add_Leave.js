@@ -9,9 +9,7 @@ export default class Add_Leave extends Component {
                <Navbar/>
 <div className="app">
                <div className="app crud-form">
-          <Link to="/logout" className="sideview">
-            Logout
-          </Link>
+          
           
           <div class="w3-container">
             <Link to="/Leave_info">

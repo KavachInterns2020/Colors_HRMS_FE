@@ -4,6 +4,8 @@ import axios from "axios";
 import { Link, Redirect } from "react-router-dom";
 import Navbar from "../../static/Navbar";
 import Footer from "../../static/Footer";
+import  DatePicker  from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 
 
@@ -30,6 +32,15 @@ class Apply_leave extends Component {
       [e.target.name]: e.target.value,
     });
   };
+
+
+  dateChanged1=(d)=>{
+    this.setState({start_date: d});
+  }
+  dateChanged2=(d)=>{
+    this.setState({end_date: d});
+  }
+
 
   resetHandler = () => {
     this.setState({
@@ -89,7 +100,7 @@ class Apply_leave extends Component {
        
         <Navbar />
         <div className="app crud-form">
-          <Link to="/logout" className="sideview">Logout</Link>
+          
           <form onSubmit={this.handleSubmit} style={{ marginBottom: "70px" }}>
             
             <div>
@@ -107,6 +118,7 @@ class Apply_leave extends Component {
             <div>
               <label>Email</label>
               <input
+              
                 type="email"
                 name="email1"
                 value={email1}
@@ -124,29 +136,37 @@ class Apply_leave extends Component {
             </div>
             <div>
               <label>Start Date </label>
-              <input
-                type="date"
-                name="start_date"
-                value={start_date}
-                onChange={this.handleChange}
-                required
-              />
+              <DatePicker
+                  selected={this.state.start_date}
+               width="100%"
+               name="start_date"
+               onChange={this.dateChanged1}
+               value={start_date}
+              
+              minDate={new Date()} 
+              isClearable
+              required 
+                />
             </div>
             <div>
               <label>End Date </label>
-              <input
-                type="date"
-                name="end_date"
-                value={end_date}
-                onChange={this.handleChange}
-                required
-              />
+              <DatePicker
+                  selected={this.state.end_date}
+               width="100%"
+               name="end_date"
+               onChange={this.dateChanged2}
+               value={end_date}
+              
+              minDate={new Date()} 
+              isClearable
+              required 
+                />
             </div>
             <div>
               <label>Reason For Leave </label>
               <textarea
                 row="3"
-                cols="15"
+                cols="30"
                 name="reason"
                 value={reason}
                 onChange={this.handleChange}

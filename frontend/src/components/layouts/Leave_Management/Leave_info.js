@@ -41,7 +41,7 @@ export default class Leave_info extends Component {
         <Navbar />
 
         <div className="app">
-          <Link to="/logout">Logout</Link>
+          
           {this.state.leave_list.length == 0 ? (
             <p>No leave list</p>
           ) : (

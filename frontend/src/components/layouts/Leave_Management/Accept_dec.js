@@ -56,7 +56,7 @@ export default class Accept_dec extends Component {
       <div>
         <Navbar />
         <div className="app">
-          <Link to="/logout">Logout</Link>
+       
           <div classNames="row">
             <div className="col-75">
               {this.state.application_list.length == 0

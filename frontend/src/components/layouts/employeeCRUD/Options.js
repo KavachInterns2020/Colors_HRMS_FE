@@ -9,7 +9,7 @@ export default class Options extends Component {
       <div>
         <Navbar />
         <div className="app">
-          <Link to="/logout">Logout</Link>
+          
 
           <div class="w3-container">
             <Link to="/Add">

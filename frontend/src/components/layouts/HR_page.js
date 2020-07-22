@@ -30,7 +30,7 @@ export default class HR_page extends Component {
         <Navbar />
 
         <div className="app">
-          <Link to="/logout">Logout</Link>
+          
           <div class="container">
             <div class="card">
               <Link to="/Options">
