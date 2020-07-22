@@ -118,10 +118,8 @@ class Apply_leave extends Component {
         {this.state.isLoading ? <Spinner /> : null}
         <Navbar />
         <div className="app crud-form">
-          <Link to="/logout" className="sideview">
-            Logout
-          </Link>
           <form onSubmit={this.handleSubmit} style={{ marginBottom: "70px" }}>
+          <h2 className="display-4 text-primary font-weight-normal m-3">Apply Leave</h2>
             <div className="form-group">
               <label>Employee ID</label>
               <input

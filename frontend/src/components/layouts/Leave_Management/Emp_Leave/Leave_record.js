@@ -42,7 +42,6 @@ export default class Leave_record extends Component {
       <div>
         <Navbar />
         <div className="app">
-          <Link to="/logout">Logout</Link>
           <div classNames="row">
             <div className="col-75">
               <div className="container2 accept-reject-block">  

@@ -79,8 +79,8 @@ export default class Type_of extends Component {
         {this.state.isLoading ? <Spinner /> : null}
         <Navbar />
         <div className="app">
-          <Link to="/logout">Logout</Link>
           <form onSubmit={this.handleSubmit} style={{ marginBottom: "70px" }}>
+          <h2 className="display-4 text-primary font-weight-normal m-3">Add Leave</h2>
             <div className="form-group">
               <label>Leave Type</label>
               <input

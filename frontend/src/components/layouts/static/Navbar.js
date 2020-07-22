@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import colors from "../../../images/colors.jpeg";
-
+import { Link, Redirect } from "react-router-dom";
 function Navbar() {
   return (
     <NavbarContainer>
@@ -33,6 +33,19 @@ function Navbar() {
                 Services
               </a>
             </li>
+            {localStorage.getItem("token") !== null ? (
+              <li className="nav-item" style={{ marginLeft: "1050px" }}>
+                <a className="nav-link" href="#">
+                  <Link
+                    to="/logout"
+                    className="sideview"
+                    style={{ color: "white" }}
+                  >
+                    Logout
+                  </Link>
+                </a>
+              </li>
+            ) : null}
           </ul>
         </div>
       </nav>

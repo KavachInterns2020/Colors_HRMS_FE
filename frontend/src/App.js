@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { observer } from "mobx-react";
 import LoginForm from "../src/authforms/LoginForm";
 import "./App.css";
+import 'react-datepicker/dist/react-datepicker.css';
 
 import HR_page from "./components/layouts/HR_page";
 import Logout from "./components/layouts/static/Logout";

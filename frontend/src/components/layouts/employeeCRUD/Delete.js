@@ -86,9 +86,7 @@ class Delete extends Component {
         {this.state.isLoading ? <Spinner /> : null}
         <Navbar />
         <div className="app crud-form">
-          <Link to="/logout" className="sideview">
-            Logout
-          </Link>
+        <h2 className="display-4 text-primary font-weight-normal m-3">Delete Employee</h2>
 
           <form onSubmit={this.handleSubmit}>
             <div className="form-group">

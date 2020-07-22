@@ -150,9 +150,7 @@ export default class Info extends Component {
             marginBottom: "40px",
           }}
         >
-          <Link to="/logout" className="sideview">
-            Logout
-          </Link>
+          <h2 className="display-4 text-primary font-weight-normal m-3">View Employee Details</h2>
           <div  className="form-group">
             <input
               type="text"

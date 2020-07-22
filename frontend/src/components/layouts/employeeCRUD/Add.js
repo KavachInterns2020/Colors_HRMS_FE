@@ -6,6 +6,7 @@ import Navbar from "../static/Navbar";
 import Footer from "../static/Footer";
 import Header from "../../templates/Header";
 import Spinner from "../static/Spinner";
+import  DatePicker  from 'react-datepicker';
 
 class Add extends Component {
   constructor(props) {
@@ -121,9 +122,7 @@ class Add extends Component {
         {this.state.isLoading ? <Spinner /> : null}
         <Navbar />
         <div className="app crud-form">
-          <Link to="/logout" className="sideview">
-            Logout
-          </Link>
+          <h2 className="display-4 text-primary font-weight-normal m-3">Add Employee</h2>
           <form onSubmit={this.handleSubmit} style={{ marginBottom: "70px" }}>
             
             <div className="form-group">

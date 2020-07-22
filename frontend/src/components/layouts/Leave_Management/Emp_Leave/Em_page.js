@@ -28,7 +28,6 @@ export default class Em_page extends Component {
         <Navbar />
 
         <div className="app">
-          <Link to="/logout">Logout</Link>
           <div class="container" style={{ marginLeft: "auto" }}>
             <div class="card">
               <Link to="/Record">
